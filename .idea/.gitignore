@@ -1,0 +1,39 @@
+﻿# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Generated files
+.idea/**/contentModel.xml
+
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/.idea.expense-tracker-api.iml
+/modules.xml
+/encodings.xml
+/indexLayout.xml
+/vcs.xml
+/contentModel.xml
+/projectSettingsUpdater.xml
+# Ignored default folder with query files
+/queries/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+
+
