@@ -17,7 +17,7 @@ public class User : Entity
         }
         
         Id = Guid.NewGuid();
-        Email = email;          //TODO: Normalize email
+        Email = email.ToLowerInvariant();
         CreatedAtUtc = DateTime.UtcNow;
     }
 }

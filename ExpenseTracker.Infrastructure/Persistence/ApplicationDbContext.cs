@@ -1,10 +1,10 @@
-﻿using ExpenseTracker.Domain.Entities;
-using ExpenseTracker.Infrastructure.Persistence.Configurations;
+﻿using ExpenseTracker.Application.Abstractions;
+using ExpenseTracker.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Infrastructure.Persistence;
 
-public sealed class ApplicationDbContext: DbContext
+public sealed class ApplicationDbContext: DbContext, IUnitOfWork
 {
     public DbSet<User> Users => Set<User>();
     public DbSet<UserCredentials> UserCredentials => Set<UserCredentials>();
@@ -20,4 +20,9 @@ public sealed class ApplicationDbContext: DbContext
         
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
+
+    Task IUnitOfWork.SaveChangesAsync(CancellationToken ct)
+    {
+        return base.SaveChangesAsync(ct);
+    }     
 }
