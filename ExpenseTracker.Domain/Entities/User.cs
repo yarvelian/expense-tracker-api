@@ -4,7 +4,7 @@ namespace ExpenseTracker.Domain.Entities;
 
 public class User : Entity
 {
-    public string Email { get; private set; }
+    public string Email { get; private set; } = null!;
     
     private  User() {
     }

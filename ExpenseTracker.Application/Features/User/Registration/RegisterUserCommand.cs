@@ -1,6 +1,5 @@
-﻿namespace ExpenseTracker.Application.Features.User.Registration;
+﻿using MediatR;
 
-public sealed record RegisterUserCommand(
-    string Email,
-    string Password
-);
+namespace ExpenseTracker.Application.Features.User.Registration;
+
+public sealed record RegisterUserCommand(string Email, string Password) : IRequest<Guid>;
