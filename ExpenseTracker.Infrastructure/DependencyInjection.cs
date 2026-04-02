@@ -2,6 +2,7 @@
 using ExpenseTracker.Infrastructure.Persistence;
 using ExpenseTracker.Infrastructure.Persistence.Repositories;
 using ExpenseTracker.Infrastructure.Services;
+using ExpenseTracker.Infrastructure.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,11 +20,21 @@ public static class DependencyInjection
 
             services.AddScoped<IUnitOfWork>(serviceProvider =>
                 serviceProvider.GetRequiredService<ApplicationDbContext>());
-
+            
             
             services.AddScoped<IUserCredentialsRepository, UserCredentialsRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            
+            
             services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
+            services.AddScoped<IJwtService, JwtService>();
+            
+            
+            services.AddOptions<JwtOptions>()
+                .Bind(configuration.GetSection("Jwt"))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+            
             
             return services;
         }
