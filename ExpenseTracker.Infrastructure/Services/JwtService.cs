@@ -41,3 +41,4 @@ internal sealed class JwtService : IJwtService
         return _tokenHandler.CreateToken(descriptor);
     }
 }
+

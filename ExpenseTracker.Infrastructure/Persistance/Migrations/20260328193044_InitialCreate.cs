@@ -99,3 +99,4 @@ namespace ExpenseTracker.Infrastructure.Persistance.Migrations
         }
     }
 }
+
