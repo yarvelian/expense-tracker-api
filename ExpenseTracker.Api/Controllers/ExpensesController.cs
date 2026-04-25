@@ -2,10 +2,12 @@
 using ExpenseTracker.Api.Models;
 using ExpenseTracker.Application.Features.Expenses.Add;
 using ExpenseTracker.Application.Features.Expenses.Delete;
+using ExpenseTracker.Application.Features.Expenses.GetByDateFilter;
 using ExpenseTracker.Application.Features.Expenses.GetById;
 using ExpenseTracker.Application.Features.Expenses.GetByUser;
 using ExpenseTracker.Application.Features.Expenses.Shared;
 using ExpenseTracker.Application.Features.Expenses.Update;
+using ExpenseTracker.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -84,6 +86,24 @@ public sealed class ExpensesController : ControllerBase
     public async Task<ActionResult<IReadOnlyList<ExpenseDto>>> GetExpenseByUserId()
     {
         var query = new GetExpenseByUserQuery(CurrentUserId);
+        
+        var result = await _mediator.Send(query);
+        
+        return Ok(result);
+    }
+    
+    [HttpGet("filter")]
+    public async Task<ActionResult<IReadOnlyList<ExpenseDto>>> GetByDateFilter(
+        [FromQuery] ExpenseDateFilter filter,
+        [FromQuery] DateTime? startDate,
+        [FromQuery] DateTime? endDate)
+    {
+        var query = new GetExpensesByDateFilterQuery(
+            CurrentUserId,
+            filter,
+            startDate,
+            endDate
+        );
         
         var result = await _mediator.Send(query);
         
