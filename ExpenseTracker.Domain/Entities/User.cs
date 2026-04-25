@@ -2,7 +2,7 @@
 
 namespace ExpenseTracker.Domain.Entities;
 
-public class User : Entity
+public sealed class User : Entity
 {
     public string Email { get; private set; } = null!;
     

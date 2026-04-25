@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ExpenseTracker.Infrastructure.Persistence.Configurations;
 
-public class UserCredentialsEntityTypeConfiguration : IEntityTypeConfiguration<UserCredentials>
+public sealed class UserCredentialsEntityTypeConfiguration : IEntityTypeConfiguration<UserCredentials>
 {
     public void Configure(EntityTypeBuilder<UserCredentials> builder)
     {

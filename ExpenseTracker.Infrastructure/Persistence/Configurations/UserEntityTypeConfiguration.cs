@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ExpenseTracker.Infrastructure.Persistence.Configurations;
 
-public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
+public sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {

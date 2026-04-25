@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ExpenseTracker.Infrastructure.Persistence.Configurations;
 
-public class ExpenseEntityTypeConfiguration : IEntityTypeConfiguration<Expense>
+public sealed class ExpenseEntityTypeConfiguration : IEntityTypeConfiguration<Expense>
 {
     public void Configure(EntityTypeBuilder<Expense> builder)
     {
@@ -14,7 +14,7 @@ public class ExpenseEntityTypeConfiguration : IEntityTypeConfiguration<Expense>
             .HasColumnType("decimal(18,2)");
 
         builder.Property(e => e.Description)
-            .HasMaxLength(500);
+            .HasMaxLength(600);
 
         builder.Property(e => e.ExpenseDate)
             .IsRequired();

@@ -2,7 +2,7 @@
 
 namespace ExpenseTracker.Domain.Entities;
 
-public class UserCredentials : Entity
+public sealed class UserCredentials : Entity
 {
     public Guid UserId { get; private set; }
     public string PasswordHash { get; private set; } = null!;

@@ -24,6 +24,7 @@ public static class DependencyInjection
             
             services.AddScoped<IUserCredentialsRepository, UserCredentialsRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IExpenseRepository, ExpenseRepository>();
             
             
             services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
