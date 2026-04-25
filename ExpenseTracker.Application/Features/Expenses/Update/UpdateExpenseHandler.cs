@@ -1,5 +1,6 @@
 ﻿using ExpenseTracker.Application.Abstractions;
 using ExpenseTracker.Domain.Entities;
+using ExpenseTracker.Domain.Exceptions;
 using MediatR;
 
 namespace ExpenseTracker.Application.Features.Expenses.Update;
@@ -20,14 +21,9 @@ public sealed class UpdateExpenseHandler : IRequestHandler<UpdateExpenseCommand,
     public async Task<Unit> Handle(UpdateExpenseCommand command, CancellationToken ct)
     {
         Expense? expense = await _expenseRepository.GetByIdAsync(command.ExpenseId, ct);
-        if (expense == null)
+        if (expense == null || expense.UserId != command.UserId)
         {
-            throw new InvalidOperationException("Expense not found");
-        }
-
-        if (expense.UserId != command.UserId)
-        {
-            throw new InvalidOperationException("Expense not found");
+            throw new NotFoundException("Expense not found");
         }
         
         expense.Update(command.Amount, command.ExpenseCategory, command.ExpenseDate, command.Description);
