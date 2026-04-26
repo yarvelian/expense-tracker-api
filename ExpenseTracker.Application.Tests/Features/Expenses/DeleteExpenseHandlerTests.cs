@@ -67,6 +67,9 @@ public sealed class DeleteExpenseHandlerTests
 
         await act.Should().ThrowAsync<NotFoundException>()
             .WithMessage("Expense not found");
+
+        _expenseRepository.DidNotReceive().Remove(Arg.Any<Expense>());
+        await _unitOfWork.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 
     [Fact]

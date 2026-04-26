@@ -48,16 +48,16 @@ public sealed class RegisterUserHandlerTests
     [Fact]
     public async Task Handle_WhenUserDoesNotExist_ShouldAddUserToRepository()
     {
-        var command = new RegisterUserCommand("test@example.com", "password123");
+        var command = new RegisterUserCommand("Test@Example.COM", "password123");
 
         _userRepository.GetByEmailAsync(command.Email, Arg.Any<CancellationToken>())
             .ReturnsNull();
 
         _passwordHasher.Hash(command.Password)
             .Returns("hashed_password");
-        
+
         await _handler.Handle(command, CancellationToken.None);
-        
+
         await _userRepository.Received(1)
             .AddAsync(Arg.Is<Domain.Entities.User>(u => u.Email == command.Email.ToLowerInvariant()),
                 Arg.Any<CancellationToken>());
@@ -68,17 +68,23 @@ public sealed class RegisterUserHandlerTests
     {
         var command = new RegisterUserCommand("test@example.com", "password123");
         const string hashedPassword = "hashed_password";
+        var capturedUserId = Guid.Empty;
 
         _userRepository.GetByEmailAsync(command.Email, Arg.Any<CancellationToken>())
             .ReturnsNull();
 
         _passwordHasher.Hash(command.Password)
             .Returns(hashedPassword);
-        
+
+        await _userRepository.AddAsync(
+            Arg.Do<Domain.Entities.User>(u => capturedUserId = u.Id),
+            Arg.Any<CancellationToken>());
+
         await _handler.Handle(command, CancellationToken.None);
-        
+
         await _credentialsRepository.Received(1)
-            .AddAsync(Arg.Is<UserCredentials>(c => c.PasswordHash == hashedPassword),
+            .AddAsync(Arg.Is<UserCredentials>(c => c.PasswordHash == hashedPassword
+                                                   && c.UserId == capturedUserId),
                 Arg.Any<CancellationToken>());
     }
 

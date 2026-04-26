@@ -112,4 +112,28 @@ public sealed class LoginUserHandlerTests
 
         _jwtService.DidNotReceive().GenerateToken(Arg.Any<Guid>(), Arg.Any<string>());
     }
+
+    [Fact]
+    public async Task Handle_WhenEmailHasMixedCase_ShouldNormalizeAndReturnToken()
+    {
+        const string mixedCaseEmail = "Test@Example.COM";
+        const string normalizedEmail = "test@example.com";
+        var command = new LoginCommand(mixedCaseEmail, "password123");
+        var userCredentials = new UserCredentials(Guid.NewGuid(), "password_hash");
+
+        _credentialsRepository.GetByEmailAsync(normalizedEmail, Arg.Any<CancellationToken>())
+            .Returns(userCredentials);
+
+        _passwordHasher.Verify(command.Password, userCredentials.PasswordHash)
+            .Returns(true);
+
+        _jwtService.GenerateToken(userCredentials.UserId, normalizedEmail)
+            .Returns("jwt_token");
+
+        var result = await _handler.Handle(command, CancellationToken.None);
+
+        result.Should().Be("jwt_token");
+        _credentialsRepository.Received(1).GetByEmailAsync(normalizedEmail, Arg.Any<CancellationToken>());
+        _jwtService.Received(1).GenerateToken(userCredentials.UserId, normalizedEmail);
+    }
 }

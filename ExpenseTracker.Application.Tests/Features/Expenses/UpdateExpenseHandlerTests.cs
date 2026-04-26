@@ -42,6 +42,10 @@ public sealed class UpdateExpenseHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         result.Should().Be(Unit.Value);
+        expense.Amount.Should().Be(command.Amount);
+        expense.Category.Should().Be(command.ExpenseCategory);
+        expense.ExpenseDate.Should().Be(command.ExpenseDate);
+        expense.Description.Should().Be(command.Description);
         await _unitOfWork.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 
@@ -84,6 +88,8 @@ public sealed class UpdateExpenseHandlerTests
 
         await act.Should().ThrowAsync<NotFoundException>()
             .WithMessage("Expense not found");
+
+        await _unitOfWork.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 
     [Fact]
