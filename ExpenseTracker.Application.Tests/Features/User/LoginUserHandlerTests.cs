@@ -133,7 +133,7 @@ public sealed class LoginUserHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         result.Should().Be("jwt_token");
-        _credentialsRepository.Received(1).GetByEmailAsync(normalizedEmail, Arg.Any<CancellationToken>());
+        await _credentialsRepository.Received(1).GetByEmailAsync(normalizedEmail, Arg.Any<CancellationToken>());
         _jwtService.Received(1).GenerateToken(userCredentials.UserId, normalizedEmail);
     }
 }
